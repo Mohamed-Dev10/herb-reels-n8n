@@ -1,0 +1,711 @@
+{
+    "name": "🌿 Herb Reel Videos - Darija AI (YouTube + TikTok)",
+    "nodes": [
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "field": "cronExpression",
+                            "expression": "0 10 * * *"
+                        }
+                    ]
+                }
+            },
+            "id": "trigger-schedule",
+            "name": "⏰ Schedule Trigger (Every Day 10am)",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1.1,
+            "position": [
+                240,
+                300
+            ],
+            "notes": "Runs every day at 10:00am and processes ALL herbs in the list.\nChange '0 10 * * *' to '0 10 * * 1' for weekly (Mondays only)."
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "herb-data",
+                            "name": "herbs",
+                            "value": [
+                                {
+                                    "name": "Thyme",
+                                    "name_darija": "za3tar",
+                                    "emoji": "🌿",
+                                    "talking_photo_id": "YOUR_THYME_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=1080",
+                                    "script_darija": "سمعني أ ذاك الوجه نعجة — أنا الزعتر! كولني باش نحسن جهاز مناعتك، نسهل تنفسك، ونعاونك فالدورة الدموية. ولا مبغيتيش دابر راسك؟ راك محتاجني!",
+                                    "benefits": "immune system, blood circulation, respiratory"
+                                },
+                                {
+                                    "name": "Rosemary",
+                                    "name_darija": "iklil",
+                                    "emoji": "🌱",
+                                    "talking_photo_id": "YOUR_ROSEMARY_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1548449112-96a38a643324?w=1080",
+                                    "script_darija": "واا! واش داير هكذاك بلا تركيز؟ أنا الإكليل جيت نعاونك — شرب ليّ شوية وذاكرتك غادي تكون ديال الحديد! ولا طاب ليك تنسى كل شي وتبقى مستريح؟",
+                                    "benefits": "memory, stress relief, focus"
+                                },
+                                {
+                                    "name": "Black Seed",
+                                    "name_darija": "hba sawda",
+                                    "emoji": "🫐",
+                                    "talking_photo_id": "YOUR_BLACKSEED_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1611241893603-3c359704e0ee?w=1080",
+                                    "script_darija": "رسول الله گال فيّا: دواء من كل داء غير الموت! واش غادي تبقى تتجاهلني؟ أنا الحبة السوداء ودابا باينة عليك محتاجني — شرب ليّ مع العسل وشوف الفرق بنفسك!",
+                                    "benefits": "immunity, anti-inflammatory, respiratory, general health"
+                                },
+                                {
+                                    "name": "Garlic",
+                                    "name_darija": "toom",
+                                    "emoji": "🧄",
+                                    "talking_photo_id": "YOUR_GARLIC_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1501200291289-c5a76c232e5f?w=1080",
+                                    "script_darija": "إيه واخا ريحتي مزيانة ماشي — ولكن أنا الثوم! نحميك من الضغط، نخفض الكوليستيرول، ونديرليك مناعة كبيرة. ريحتي أخساسات — صحتك ريال! كولني ولا تتوب!",
+                                    "benefits": "blood pressure, cholesterol, immunity, heart health"
+                                },
+                                {
+                                    "name": "Mulberry",
+                                    "name_darija": "toot",
+                                    "emoji": "🫑",
+                                    "talking_photo_id": "YOUR_MULBERRY_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1596591868231-05e48c6e42d8?w=1080",
+                                    "script_darija": "أ الناس! واش عارفين أنا التوت غني بالفيتامينات والأنتيوكسيدان؟ كولوني وعيشو بصحة بلا ما تشيخو بزاف! دابا واش مبغيتيش تشيخ مزيان وتبقى نشيط؟",
+                                    "benefits": "antioxidants, anti-aging, vitamins, energy"
+                                },
+                                {
+                                    "name": "Mint",
+                                    "name_darija": "na3na3",
+                                    "emoji": "🌿",
+                                    "talking_photo_id": "YOUR_MINT_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?w=1080",
+                                    "script_darija": "واا أ صاحبي! ديك النفخة ديالك كتبان حتى للجيران 😂 أنا النعناع — شرب ليّ وتخلص من الغازات، تهدي القولون، وتهضم مزيان. غير إلا عندك حموضة — ابعد عليّ شوية وسامحني!",
+                                    "benefits": "bloating, gas, colon, digestion"
+                                },
+                                {
+                                    "name": "Chamomile",
+                                    "name_darija": "babounj",
+                                    "emoji": "🌼",
+                                    "talking_photo_id": "YOUR_CHAMOMILE_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=1080",
+                                    "script_darija": "أتاي ديال الليل ما كيخليكش تنعس؟ 😴 أنا البابونج — جيت نهدي معدتك، نحارب الالتهاب، ونعاونك فالإسهال. وإلا عندك قولون عصبي — أنا صاحبك الأول في الليل!",
+                                    "benefits": "stomach, inflammation, diarrhea, irritable bowel"
+                                },
+                                {
+                                    "name": "Fennel",
+                                    "name_darija": "nafaa",
+                                    "emoji": "🌾",
+                                    "talking_photo_id": "YOUR_FENNEL_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=1080",
+                                    "script_darija": "أ صاحبي تشكي من الغازات؟ 😂 أنا الشمر وجيت لنجدتك! نخرج ليك الغازات، نعاونك تهضم، ونخفف ألم المعدة. ولا بغيتي تبقى منفوخ وكاتسمعك الدار كاملة؟",
+                                    "benefits": "gas, bloating, digestion, stomach pain"
+                                },
+                                {
+                                    "name": "Anise",
+                                    "name_darija": "hbat hlawa",
+                                    "emoji": "🌟",
+                                    "talking_photo_id": "YOUR_ANISE_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1615485291234-9d694218aeb0?w=1080",
+                                    "script_darija": "أ الزردة! عندك مغص ولا برد ولا سعال؟ أنا اليانسون — طبيب البيت الأول! نهدي جهازك الهضمي، ندفيك وقت الزكام، ونخرج ليك المغص. جربني وتقلبني كلشي!",
+                                    "benefits": "colic, cold, cough, digestion"
+                                },
+                                {
+                                    "name": "Cinnamon",
+                                    "name_darija": "qarfa",
+                                    "emoji": "🟤",
+                                    "talking_photo_id": "YOUR_CINNAMON_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1514733670139-4d87a1941d55?w=1080",
+                                    "script_darija": "كنت قرفة — ودابا مشهورة 😏 أنا القرفة كنظم ليك السكر، كنحارب البكتيريا، وكندفيك وقت الزكام. غير خود بالك — إلا عندك مشاكل فالمعدة خد شوية بشوية!",
+                                    "benefits": "blood sugar, antibacterial, cold, warming"
+                                },
+                                {
+                                    "name": "Licorice Root",
+                                    "name_darija": "3rq sous",
+                                    "emoji": "🪵",
+                                    "talking_photo_id": "YOUR_LICORICE_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=1080",
+                                    "script_darija": "أ صاحبي! عندك قرحة ولا سعال ما بغاش يمشي؟ أنا عرق السوس — كنحمي بطانة معدتك وكنعاونك فالسعال. غير إلا عندك ضغط مرتفع — ردد راسك مني شوية 😅",
+                                    "benefits": "stomach lining, ulcer, cough"
+                                },
+                                {
+                                    "name": "Lavender",
+                                    "name_darija": "khzama",
+                                    "emoji": "💜",
+                                    "talking_photo_id": "YOUR_LAVENDER_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1499002238440-d264edd596ec?w=1080",
+                                    "script_darija": "كتسوّل على النوم وما تلقاوش؟ 😂 أنا الخزامى — ريحتي وحدها كافية باش تنعس! كنهدي الجسم، كنعاونك تنعس بنعيم، ومفيدة حتى فاحتقان الأنف. شمني وداو!",
+                                    "benefits": "sleep, relaxation, nasal congestion, calming"
+                                },
+                                {
+                                    "name": "Ginger with Honey",
+                                    "name_darija": "skinjbir m3a l3sel",
+                                    "emoji": "🍯",
+                                    "talking_photo_id": "YOUR_GINGER_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?w=1080",
+                                    "script_darija": "ديك الكحة والبرد اللي ما بغاوش يمشيو؟ 🤧 أنا الزنجبيل مع العسل — مضاد طبيعي للفيروسات، كنسخن جسمك، وكنخفف الكحة. سخن ليّ، شرب ليّ، وكون بصحة!",
+                                    "benefits": "cold, cough, antiviral, warming"
+                                },
+                                {
+                                    "name": "Olive Leaf",
+                                    "name_darija": "wra9 zitoune",
+                                    "emoji": "🫒",
+                                    "talking_photo_id": "YOUR_OLIVELEAF_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=1080",
+                                    "script_darija": "الزيتون كاملو ريّاض — حتى الأوراق ديالي! 😎 أنا أوراق الزيتون — مضادة قوية للبكتيريا وكنقوي مناعتك من الداخل. مادمتيش تعرفني زعما — دابا عرفيتي وما تنساني!",
+                                    "benefits": "antibacterial, immunity boost"
+                                },
+                                {
+                                    "name": "Fenugreek",
+                                    "name_darija": "helba",
+                                    "emoji": "🟡",
+                                    "talking_photo_id": "YOUR_FENUGREEK_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=1080",
+                                    "script_darija": "أ صاحبي! عندك سكري ولا هضم ضعيف؟ أنا الحلبة جيت نعاونك! كنهضم ليك، كنقوي جسمك، ومفيدة للسكري. كثير من الناس ما كيعرفوني — ولكن اللي جرّبني ما خلاني!",
+                                    "benefits": "diabetes, digestion, body strength"
+                                },
+                                {
+                                    "name": "Sage",
+                                    "name_darija": "mriymiya",
+                                    "emoji": "🍃",
+                                    "talking_photo_id": "YOUR_SAGE_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?w=1080",
+                                    "script_darija": "حلقك كيوجعك ولا لثتك فيها مشاكل؟ 😬 أنا المريمية — جيت نعاونك! كنهدي الحلق، كنحارب مشاكل اللثة، وكنخفف التعرق الزائد. ولا بغيتي تبقى يابس وكيحرقك حلقك كل نهار؟",
+                                    "benefits": "throat, gums, excessive sweating"
+                                },
+                                {
+                                    "name": "Aloe Vera",
+                                    "name_darija": "sabbar",
+                                    "emoji": "🌵",
+                                    "talking_photo_id": "YOUR_ALOEVERA_AVATAR_ID",
+                                    "background_url": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=1080",
+                                    "script_darija": "الناس كيستعملوني غير للجلد — ولكن أنا أكثر من هذا! 😤 أنا الصبار — كنهدي الأمعاء، كنعاون فالإمساك، وكنعاون الجلد من الداخل والخارج. واحد بكل الأدوار — ريّاض!",
+                                    "benefits": "intestines, constipation, skin"
+                                }
+                            ],
+                            "type": "array"
+                        }
+                    ]
+                }
+            },
+            "id": "set-herbs-data",
+            "name": "🫙 Herb Scripts Data",
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                460,
+                300
+            ],
+            "notes": "===== HOW TO ADD A NEW HERB =====\nCopy one of the objects above and paste it at the end of the array.\nChange: name, name_darija, emoji, talking_photo_id, background_url, script_darija, benefits.\nThat's it — the workflow handles the rest automatically!\n\n===== talking_photo_id =====\nGet this from HeyGen Studio after uploading your herb image:\nstudio.heygen.com → Avatars → Photo Avatars → Upload Image → Copy ID"
+        },
+        {
+            "parameters": {
+                "fieldToSplitOut": "herbs",
+                "options": {}
+            },
+            "id": "split-herbs",
+            "name": "🔀 Split Each Herb",
+            "type": "n8n-nodes-base.splitOut",
+            "typeVersion": 1,
+            "position": [
+                680,
+                300
+            ],
+            "notes": "This node splits the herbs array so each herb is processed one by one.\nWith 5 herbs = 5 videos created and published automatically."
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.elevenlabs.io/v1/text-to-speech/OfGMGmhShO8iL9jCkXy8",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "xi-api-key",
+                            "value": "={{ $credentials.elevenlabsApiKey }}"
+                        },
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                        },
+                        {
+                            "name": "Accept",
+                            "value": "audio/mpeg"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"text\": \"{{ $json.script_darija }}\",\n  \"model_id\": \"eleven_multilingual_v2\",\n  \"voice_settings\": {\n    \"stability\": 0.4,\n    \"similarity_boost\": 0.85,\n    \"style\": 0.65,\n    \"use_speaker_boost\": true\n  }\n}",
+                "options": {
+                    "response": {
+                        "response": {
+                            "responseFormat": "file"
+                        }
+                    }
+                }
+            },
+            "id": "elevenlabs-tts",
+            "name": "🎙️ ElevenLabs TTS - Darija Voice",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                900,
+                300
+            ],
+            "notes": "Voice: Ghizlane — Moroccan Darija dialect\nVoice ID: OfGMGmhShO8iL9jCkXy8\nModel: eleven_multilingual_v2\n\nGet API key: elevenlabs.io → Profile → API Keys"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.elevenlabs.io/v1/uploads/files",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "xi-api-key",
+                            "value": "={{ $credentials.elevenlabsApiKey }}"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "contentType": "multipart-form-data",
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "file",
+                            "value": "={{ $binary.data }}",
+                            "parameterType": "formBinaryData"
+                        },
+                        {
+                            "name": "name",
+                            "value": "={{ $('🔀 Split Each Herb').item.json.name }}_darija_voice.mp3"
+                        }
+                    ]
+                }
+            },
+            "id": "upload-audio-temp",
+            "name": "⬆️ Upload Audio to Temp Host",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                1120,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.heygen.com/v2/video/generate",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "X-Api-Key",
+                            "value": "={{ $credentials.heygenApiKey }}"
+                        },
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"video_inputs\": [\n    {\n      \"character\": {\n        \"type\": \"talking_photo\",\n        \"talking_photo_id\": \"{{ $('🔀 Split Each Herb').item.json.talking_photo_id }}\"\n      },\n      \"voice\": {\n        \"type\": \"audio\",\n        \"audio_url\": \"{{ $json.audio_url }}\"\n      },\n      \"background\": {\n        \"type\": \"image\",\n        \"url\": \"{{ $('🔀 Split Each Herb').item.json.background_url }}\"\n      }\n    }\n  ],\n  \"dimension\": {\n    \"width\": 1080,\n    \"height\": 1920\n  },\n  \"caption\": false,\n  \"title\": \"{{ $('🔀 Split Each Herb').item.json.emoji }} {{ $('🔀 Split Each Herb').item.json.name }} - فوائد بالدارجة\"\n}",
+                "options": {}
+            },
+            "id": "heygen-create-video",
+            "name": "🎬 HeyGen Create Video",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                1340,
+                300
+            ],
+            "notes": "Creates 9:16 vertical reel (1080x1920) — perfect for YouTube Shorts + TikTok\n\nGet API key: studio.heygen.com → Settings → API Key\n\nFor talking_photo_id: Upload herb image in HeyGen Studio → Photo Avatars → Copy the ID"
+        },
+        {
+            "parameters": {
+                "amount": 30,
+                "unit": "seconds"
+            },
+            "id": "wait-for-heygen",
+            "name": "⏳ Wait 30s for Render",
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1.1,
+            "position": [
+                1560,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "method": "GET",
+                "url": "=https://api.heygen.com/v1/video_status.get?video_id={{ $('🎬 HeyGen Create Video').item.json.data.video_id }}",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "X-Api-Key",
+                            "value": "={{ $credentials.heygenApiKey }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "check-video-status",
+            "name": "🔍 Check Video Status",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                1780,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict"
+                    },
+                    "conditions": [
+                        {
+                            "id": "status-check",
+                            "leftValue": "={{ $json.data.status }}",
+                            "rightValue": "completed",
+                            "operator": {
+                                "type": "string",
+                                "operation": "equals"
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "id": "if-completed",
+            "name": "✅ Video Ready?",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2,
+            "position": [
+                2000,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "amount": 20,
+                "unit": "seconds"
+            },
+            "id": "wait-retry",
+            "name": "⏳ Wait 20s + Retry",
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1.1,
+            "position": [
+                2000,
+                500
+            ],
+            "notes": "Loops back to Check Video Status until video is ready."
+        },
+        {
+            "parameters": {
+                "method": "GET",
+                "url": "={{ $('🔍 Check Video Status').item.json.data.video_url }}",
+                "options": {
+                    "response": {
+                        "response": {
+                            "responseFormat": "file"
+                        }
+                    }
+                }
+            },
+            "id": "download-video",
+            "name": "⬇️ Download Final Video",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                2220,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "upload",
+                "name": "={{ $('🔀 Split Each Herb').item.json.emoji }} {{ $('🔀 Split Each Herb').item.json.name }}_Darija_Reel_{{ $now.format('yyyy-MM-dd') }}.mp4",
+                "driveId": {
+                    "__rl": true,
+                    "mode": "list",
+                    "value": "My Drive"
+                },
+                "folderId": {
+                    "__rl": true,
+                    "value": "YOUR_GOOGLE_DRIVE_FOLDER_ID",
+                    "mode": "id"
+                },
+                "options": {}
+            },
+            "id": "save-to-drive",
+            "name": "💾 Save to Google Drive",
+            "type": "n8n-nodes-base.googleDrive",
+            "typeVersion": 3,
+            "position": [
+                2440,
+                300
+            ],
+            "notes": "Backup copy before publishing.\nReplace YOUR_GOOGLE_DRIVE_FOLDER_ID with your actual Drive folder ID.\nGet it from Drive URL: drive.google.com/drive/folders/[THIS_PART]"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.upload-post.com/api/upload",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "=Bearer {{ $credentials.uploadPostApiKey }}"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "contentType": "multipart-form-data",
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "file",
+                            "value": "={{ $binary.data }}",
+                            "parameterType": "formBinaryData"
+                        },
+                        {
+                            "name": "platforms",
+                            "value": "tiktok,youtube"
+                        },
+                        {
+                            "name": "title",
+                            "value": "={{ $('🔀 Split Each Herb').item.json.emoji }} {{ $('🔀 Split Each Herb').item.json.name }} بالدارجة — فوائد طبيعية 🌿 #Shorts #دارجة #أعشاب"
+                        },
+                        {
+                            "name": "description",
+                            "value": "={{ $('🔀 Split Each Herb').item.json.script_darija }}\n\n🌿 فوائد {{ $('🔀 Split Each Herb').item.json.name_darija }} للصحة\n\n#Shorts #دارجة #أعشاب #صحة #المغرب #TikTok #Reels #herbes #maroc"
+                        },
+                        {
+                            "name": "youtube_category",
+                            "value": "26"
+                        },
+                        {
+                            "name": "youtube_privacy",
+                            "value": "public"
+                        },
+                        {
+                            "name": "tiktok_privacy",
+                            "value": "PUBLIC_TO_EVERYONE"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "publish-youtube-tiktok",
+            "name": "🚀 Publish to YouTube Shorts + TikTok",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                2660,
+                300
+            ],
+            "notes": "Publishes to BOTH YouTube Shorts + TikTok in ONE API call!\n\nSteps to setup:\n1. Register at app.upload-post.com\n2. Connect your YouTube account (OAuth - you login yourself)\n3. Connect your TikTok account (OAuth - you login yourself)\n4. Go to Settings → API Keys → Copy your key\n5. Add it to n8n Credentials as HTTP Header Auth"
+        },
+        {
+            "parameters": {
+                "fromEmail": "noreply@yourdomain.com",
+                "toEmail": "you@yourdomain.com",
+                "subject": "=✅ {{ $('🔀 Split Each Herb').item.json.emoji }} {{ $('🔀 Split Each Herb').item.json.name }} — نُشر على TikTok + YouTube Shorts!",
+                "emailType": "html",
+                "message": "=<h2>🌿 تم النشر بنجاح! 🎉</h2>\n<p><strong>العشبة:</strong> {{ $('🔀 Split Each Herb').item.json.name }} ({{ $('🔀 Split Each Herb').item.json.name_darija }}) {{ $('🔀 Split Each Herb').item.json.emoji }}</p>\n<p><strong>السكريبت:</strong></p>\n<blockquote>{{ $('🔀 Split Each Herb').item.json.script_darija }}</blockquote>\n<hr>\n<h3>📱 تم النشر على:</h3>\n<p>▶️ <strong>YouTube Shorts</strong> — نُشر بـ #Shorts</p>\n<p>🎵 <strong>TikTok</strong> — نُشر PUBLIC للجميع</p>\n<p><strong>Google Drive:</strong> <a href='{{ $('💾 Save to Google Drive').item.json.webViewLink }}'>فتح الفيديو</a></p>\n<hr>\n<p><em>تم التشغيل الأوتوماتيكي بـ n8n 🤖</em></p>",
+                "options": {}
+            },
+            "id": "send-notification",
+            "name": "📧 Email: Published Report",
+            "type": "n8n-nodes-base.emailSend",
+            "typeVersion": 2.1,
+            "position": [
+                2880,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "⏰ Schedule Trigger (Every Day 10am)": {
+            "main": [
+                [
+                    {
+                        "node": "🫙 Herb Scripts Data",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "🫙 Herb Scripts Data": {
+            "main": [
+                [
+                    {
+                        "node": "🔀 Split Each Herb",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "🔀 Split Each Herb": {
+            "main": [
+                [
+                    {
+                        "node": "🎙️ ElevenLabs TTS - Darija Voice",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "🎙️ ElevenLabs TTS - Darija Voice": {
+            "main": [
+                [
+                    {
+                        "node": "⬆️ Upload Audio to Temp Host",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "⬆️ Upload Audio to Temp Host": {
+            "main": [
+                [
+                    {
+                        "node": "🎬 HeyGen Create Video",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "🎬 HeyGen Create Video": {
+            "main": [
+                [
+                    {
+                        "node": "⏳ Wait 30s for Render",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "⏳ Wait 30s for Render": {
+            "main": [
+                [
+                    {
+                        "node": "🔍 Check Video Status",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "🔍 Check Video Status": {
+            "main": [
+                [
+                    {
+                        "node": "✅ Video Ready?",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "✅ Video Ready?": {
+            "main": [
+                [
+                    {
+                        "node": "⬇️ Download Final Video",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "⏳ Wait 20s + Retry",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "⏳ Wait 20s + Retry": {
+            "main": [
+                [
+                    {
+                        "node": "🔍 Check Video Status",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "⬇️ Download Final Video": {
+            "main": [
+                [
+                    {
+                        "node": "💾 Save to Google Drive",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "💾 Save to Google Drive": {
+            "main": [
+                [
+                    {
+                        "node": "🚀 Publish to YouTube Shorts + TikTok",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "🚀 Publish to YouTube Shorts + TikTok": {
+            "main": [
+                [
+                    {
+                        "node": "📧 Email: Published Report",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1",
+        "saveManualExecutions": true,
+        "callerPolicy": "workflowsFromSameOwner",
+        "errorWorkflow": ""
+    },
+    "meta": {
+        "templateCredsSetupCompleted": false
+    }
+}

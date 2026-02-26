@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>🌿 Herb Reel Automation - n8n + Darija AI → YouTube Shorts + TikTok</title>
+    <meta name="description"
+        content="أتمتة كاملة لإنشاء ونشر فيديوهات الأعشاب بالدارجة المغربية على YouTube Shorts و TikTok باستخدام n8n" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Inter:wght@300;400;600;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --green-deep: #0a2e1a;
+            --green-dark: #112d1c;
+            --green-mid: #1a4a2e;
+            --green-bright: #2d7a4f;
+            --green-glow: #3dbe6e;
+            --gold: #f0c040;
+            --gold-light: #ffd97a;
+            --cream: #fef9ec;
+            --text-main: #e8f5ec;
+            --text-muted: #8ab89a;
+            --card-bg: rgba(26, 74, 46, 0.4);
+            --card-border: rgba(61, 190, 110, 0.2);
+            --glass: rgba(10, 46, 26, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--green-deep) 0%, #071a0e 50%, #0d2418 100%);
+            color: var(--text-main);
+            font-family: 'Cairo', 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(61, 190, 110, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(240, 192, 64, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(45, 122, 79, 0.04) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(61, 190, 110, 0.15);
+            border: 1px solid rgba(61, 190, 110, 0.35);
+            border-radius: 100px;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            color: var(--green-glow);
+            margin-bottom: 24px;
+            animation: pulse-badge 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(61, 190, 110, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 0 10px rgba(61, 190, 110, 0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, var(--green-glow) 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 620px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--green-glow);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== HERB CARDS ===== */
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-size: 1rem;
+        }
+
+        .herbs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 80px;
+        }
+
+        .herb-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 28px;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .herb-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green-glow), var(--gold));
+        }
+
+        .herb-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(61, 190, 110, 0.5);
+            box-shadow: 0 20px 60px rgba(61, 190, 110, 0.15);
+        }
+
+        .herb-emoji {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .herb-name-ar {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--green-glow);
+            margin-bottom: 4px;
+        }
+
+        .herb-name-en {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .darija-script {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(61, 190, 110, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--cream);
+            font-style: italic;
+            margin-bottom: 16px;
+        }
+
+        .darija-script::before {
+            content: '🎤 ';
+        }
+
+        .benefits-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .benefit-tag {
+            background: rgba(61, 190, 110, 0.1);
+            border: 1px solid rgba(61, 190, 110, 0.25);
+            border-radius: 100px;
+            padding: 4px 12px;
+            font-size: 0.78rem;
+            color: var(--green-glow);
+        }
+
+        /* ===== WORKFLOW FLOW ===== */
+        .workflow-section {
+            margin-bottom: 80px;
+        }
+
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+        }
+
+        .flow-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+            flex-shrink: 0;
+        }
+
+        .flow-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            background: var(--green-mid);
+            border: 2px solid var(--green-glow);
+            z-index: 2;
+            flex-shrink: 0;
+            box-shadow: 0 0 20px rgba(61, 190, 110, 0.3);
+        }
+
+        .flow-line {
+            width: 2px;
+            flex: 1;
+            background: linear-gradient(to bottom, var(--green-glow), rgba(61, 190, 110, 0.1));
+            min-height: 40px;
+        }
+
+        .flow-content {
+            flex: 1;
+            padding: 0 0 40px 24px;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px 24px;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            border-color: rgba(61, 190, 110, 0.4);
+            box-shadow: 0 8px 32px rgba(61, 190, 110, 0.1);
+        }
+
+        .step-number {
+            font-size: 0.75rem;
+            color: var(--green-glow);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .step-tool {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            background: rgba(240, 192, 64, 0.1);
+            border: 1px solid rgba(240, 192, 64, 0.25);
+            border-radius: 8px;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            color: var(--gold);
+        }
+
+        /* ===== TOOLS SECTION ===== */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 80px;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(61, 190, 110, 0.4);
+        }
+
+        .tool-logo {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .tool-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .tool-role {
+            font-size: 0.8rem;
+            color: var(--green-glow);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .tool-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .tool-link {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 16px;
+            border: 1px solid var(--green-glow);
+            border-radius: 100px;
+            color: var(--green-glow);
+            font-size: 0.78rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .tool-link:hover {
+            background: var(--green-glow);
+            color: var(--green-deep);
+        }
+
+        /* ===== SCRIPTS SECTION ===== */
+        .scripts-section {
+            margin-bottom: 80px;
+        }
+
+        .script-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(12px);
+            margin-bottom: 20px;
+        }
+
+        .script-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .script-emoji {
+            font-size: 2rem;
+        }
+
+        .script-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--green-glow);
+        }
+
+        .script-darija {
+            background: rgba(0, 0, 0, 0.4);
+            border-right: 3px solid var(--green-glow);
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            line-height: 2;
+            color: var(--cream);
+            margin-bottom: 12px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .translation {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: italic;
+            padding: 10px 16px;
+            background: rgba(61, 190, 110, 0.05);
+            border-radius: 8px;
+        }
+
+        /* ===== IMPORT BOX ===== */
+        .import-box {
+            background: linear-gradient(135deg, rgba(61, 190, 110, 0.1), rgba(240, 192, 64, 0.05));
+            border: 2px solid rgba(61, 190, 110, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .import-box h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .import-box p {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--green-glow), var(--green-bright));
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(61, 190, 110, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(61, 190, 110, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(240, 192, 64, 0.15);
+            color: var(--gold);
+            border: 1px solid rgba(240, 192, 64, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(240, 192, 64, 0.25);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ===== CREDENTIALS TABLE ===== */
+        .creds-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .creds-table th {
+            background: var(--green-mid);
+            padding: 12px 16px;
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--green-glow);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .creds-table td {
+            padding: 12px 16px;
+            font-size: 0.87rem;
+            color: var(--text-main);
+            border-bottom: 1px solid rgba(61, 190, 110, 0.07);
+        }
+
+        .creds-table tr:hover td {
+            background: rgba(61, 190, 110, 0.04);
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: var(--gold-light);
+            font-family: monospace;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--card-border), transparent);
+            margin: 60px 0;
+        }
+
+        /* Floating herbs animation */
+        .floating-herbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-herb {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.04;
+            animation: float-herb linear infinite;
+        }
+
+        @keyframes float-herb {
+            from {
+                transform: translateY(100vh) rotate(0deg);
+            }
+
+            to {
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-stats {
+                gap: 24px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Floating background herbs -->
+    <div class="floating-herbs">
+        <span class="floating-herb" style="left:8%;animation-duration:18s;animation-delay:0s">🌿</span>
+        <span class="floating-herb" style="left:20%;animation-duration:22s;animation-delay:3s">🌱</span>
+        <span class="floating-herb" style="left:35%;animation-duration:16s;animation-delay:6s">🧄</span>
+        <span class="floating-herb" style="left:55%;animation-duration:24s;animation-delay:1s">🫒</span>
+        <span class="floating-herb" style="left:72%;animation-duration:20s;animation-delay:8s">🌿</span>
+        <span class="floating-herb" style="left:88%;animation-duration:19s;animation-delay:4s">🌾</span>
+    </div>
+
+    <div class="container">
+
+        <!-- ===== HERO ===== -->
+        <section class="hero">
+            <div class="hero-badge">
+                <span>🤖</span>
+                <span>n8n Automation + AI Video</span>
+            </div>
+            <h1>🌿 Herb Reels بالدارجة<br />Automation Guide</h1>
+            <p class="hero-subtitle" style="max-width:700px;">
+                أتمتة كاملة لإنشاء ونشر فيديوهات ريلز عشاب تحكي بالدارجة المغربية — مباشرة على <strong
+                    style="color:var(--green-glow)">YouTube Shorts</strong> و <strong
+                    style="color:var(--gold)">TikTok</strong> 🎯
+            </p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-value">13s</div>
+                    <div class="stat-label">مدة الفيديو</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">أعشاب</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">أوتوماتيك</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">▶️+🎵</div>
+                    <div class="stat-label">YouTube + TikTok</div>
+                </div>
+            </div>
+
+            <!-- Platform badges -->
+            <div style="display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;">
+                <div
+                    style="background:rgba(255,0,0,0.1);border:1px solid rgba(255,80,80,0.3);border-radius:100px;padding:8px 20px;font-size:0.85rem;color:#ff6b6b;">
+                    ▶️ YouTube Shorts</div>
+                <div
+                    style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:8px 20px;font-size:0.85rem;color:#fff;">
+                    🎵 TikTok</div>
+                <div
+                    style="background:rgba(61,190,110,0.1);border:1px solid rgba(61,190,110,0.3);border-radius:100px;padding:8px 20px;font-size:0.85rem;color:var(--green-glow);">
+                    🎙️ Darija Voice AI</div>
+                <div
+                    style="background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.25);border-radius:100px;padding:8px 20px;font-size:0.85rem;color:var(--gold);">
+                    🤖 n8n Automation</div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== HERB SCRIPTS ===== -->
+        <h2 class="section-title">📜 سكريبتات الدارجة</h2>
+        <p class="section-subtitle">نبدأ بعشبتين — الزعتر والإكليل</p>
+
+        <div class="herbs-grid">
+
+            <div class="herb-card">
+                <span class="herb-emoji">🌿</span>
+                <div class="herb-name-ar">الزعتر</div>
+                <div class="herb-name-en">Thyme — Za3tar</div>
+                <div class="darija-script">
+                    "سمعني أ ذاك الوجه — ناعجة، قولني باش نحسن جيهاج مناعتك وعندي ونعاونك فالدورة الدموية — ولا مبغيتيش
+                    دابر راسك؟"
+                </div>
+                <div class="benefits-list">
+                    <span class="benefit-tag">🩺 مناعة قوية</span>
+                    <span class="benefit-tag">❤️ دورة دموية</span>
+                    <span class="benefit-tag">🦠 مضاد للبكتيريا</span>
+                    <span class="benefit-tag">😤 تنفس</span>
+                </div>
+            </div>
+
+            <div class="herb-card">
+                <span class="herb-emoji">🌱</span>
+                <div class="herb-name-ar">الإكليل</div>
+                <div class="herb-name-en">Rosemary — Iklil</div>
+                <div class="darija-script">
+                    "أ سيدي — أنا الإكليل وجيت نعاونك! غير شرب شوية ديالي وذاكرتك غادي تكون ديال الحديد — ولا بغيتي تعيش
+                    بلا ستريس؟"
+                </div>
+                <div class="benefits-list">
+                    <span class="benefit-tag">🧠 ذاكرة قوية</span>
+                    <span class="benefit-tag">😌 ضد الإجهاد</span>
+                    <span class="benefit-tag">💆 تركيز</span>
+                    <span class="benefit-tag">🩸 دوران دموي</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ===== ALL 5 HERBS SCRIPTS ===== -->
+        <div class="scripts-section">
+            <h2 class="section-title">🌾 سكريبتات كل الأعشاب الخمسة</h2>
+            <p class="section-subtitle">جاهزة للنسخ والإدراج في n8n</p>
+
+            <div class="script-card">
+                <div class="script-header">
+                    <span class="script-emoji">🌿</span>
+                    <div>
+                        <div class="script-name">الزعتر — Thyme</div>
+                    </div>
+                </div>
+                <div class="script-darija">
+                    سمعني أ ذاك الوجه ناعجة، كولني باش نحسن جيهاج مناعتَك ونعاونك فالدورة الدموية — ولا مبغيتيش دابر
+                    راسك؟
+                </div>
+                <div class="translation">💬 Traduction: "Écoute-moi tête de mouton, mange-moi pour booster ton immunité
+                    et ta circulation sanguine — ou tu veux pas prendre soin de toi?"</div>
+            </div>
+
+            <div class="script-card">
+                <div class="script-header">
+                    <span class="script-emoji">🌱</span>
+                    <div>
+                        <div class="script-name">الإكليل — Rosemary</div>
+                    </div>
+                </div>
+                <div class="script-darija">
+                    واا! واش داير هكذاك بلا تركيز؟ أنا الإكليل وجيت نعاونك — شرب ليّ شوية وذاكرتك غادي تكون ديال الحديد.
+                    ولا طاب ليك تنسى كل شي؟
+                </div>
+                <div class="translation">💬 Traduction: "Hé! Tu fais quoi sans concentration? Je suis le Romarin,
+                    bois-moi et ta mémoire sera en béton. Ou tu préfères tout oublier?"</div>
+            </div>
+
+            <div class="script-card">
+                <div class="script-header">
+                    <span class="script-emoji">🫐</span>
+                    <div>
+                        <div class="script-name">الحبة السوداء — Black Seed</div>
+                    </div>
+                </div>
+                <div class="script-darija">
+                    رسول الله گال فيّا: دواء من كل داء غيرَ الموت. واش غادي تبقى تتجاهلني؟ أنا الحبة السوداء ودابا باينة
+                    عليك محتاجني!
+                </div>
+                <div class="translation">💬 Traduction: "Le Prophète a dit que je soigne tout sauf la mort. Tu vas
+                    encore m'ignorer? Je suis la Graine Noire et clairement tu as besoin de moi!"</div>
+            </div>
+
+            <div class="script-card">
+                <div class="script-header">
+                    <span class="script-emoji">🧄</span>
+                    <div>
+                        <div class="script-name">اللتشين — Garlic</div>
+                    </div>
+                </div>
+                <div class="script-darija">
+                    إيه واخا ريحتي مزيانة ماشي، ولكن أنا اللتشين — نحميك من الضغط، نخفض الكوليستيرول وندير ليك مناعة
+                    كبيرة. ريحتي أخساسات — صحتك ريال!
+                </div>
+                <div class="translation">💬 Traduction: "Ok j'avoue mon odeur est pas terrible, mais moi l'Ail je te
+                    protège de la tension, réduis le cholestérol et booste ton immunité. Mon odeur c'est des sentiments
+                    — ta santé c'est réel!"</div>
+            </div>
+
+            <div class="script-card">
+                <div class="script-header">
+                    <span class="script-emoji">🫑</span>
+                    <div>
+                        <div class="script-name">التوت — Mulberry</div>
+                    </div>
+                </div>
+                <div class="script-darija">
+                    أ الناس! واش عارفين أن أنا التوت غني بالفيتامينات والأنتيوكسيدان؟ كولوني وعيشو بصحة ودون ما تشيخو
+                    بزاف! دابا واش مبغيتيش تشيخ مزيان؟
+                </div>
+                <div class="translation">💬 Traduction: "Hé les gens! Saviez-vous que moi la Mûre je suis riche en
+                    vitamines et antioxydants? Mangez-moi et vivez en bonne santé sans vieillir trop vite! Vous ne
+                    voulez pas bien vieillir?"</div>
+            </div>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ===== WORKFLOW STEPS ===== -->
+        <section class="workflow-section">
+            <h2 class="section-title">⚙️ خطوات الـ n8n Workflow</h2>
+            <p class="section-subtitle">كيفاش يشتغل الأتوماتيك — خطوة بخطوة</p>
+
+            <div class="flow-container">
+
+                <div class="flow-step">
+                    <div class="flow-left">
+                        <div class="flow-icon">📅</div>
+                        <div class="flow-line"></div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="step-card">
+                            <div class="step-number">الخطوة 1</div>
+                            <div class="step-title">Schedule Trigger — الجدول الزمني</div>
+                            <div class="step-desc">كل أسبوع (أو يدويًا) يتشغل الـ workflow ويبدأ العملية. تقدر تشغله
+                                يدويًا أو تحدد وقت محدد.</div>
+                            <span class="step-tool">🔧 n8n Schedule Trigger</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-left">
+                        <div class="flow-icon">📝</div>
+                        <div class="flow-line"></div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="step-card">
+                            <div class="step-number">الخطوة 2</div>
+                            <div class="step-title">Set Node — بيانات الأعشاب والسكريبتات</div>
+                            <div class="step-desc">يتحمل بيانات كل عشبة: الاسم بالدارجة، السكريبت، الإيموجي، لينك الصورة
+                                للـ avatar. كل عشبة في object منفصل.</div>
+                            <span class="step-tool">🔧 n8n Set Node</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-left">
+                        <div class="flow-icon">🔀</div>
+                        <div class="flow-line"></div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="step-card">
+                            <div class="step-number">الخطوة 3</div>
+                            <div class="step-title">Split Out — تقسيم كل عشبة</div>
+                            <div class="step-desc">يفصل كل عشبة في item منفصل باش يعمل الـ workflow لكل واحدة على حدة.
+                                الزعتر أولًا، ثم الإكليل...</div>
+                            <span class="step-tool">🔧 n8n Split Out Node</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-left">
+                        <div class="flow-icon">🎙️</div>
+                        <div class="flow-line"></div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="step-card">
+                            <div class="step-number">الخطوة 4</div>
+                            <div class="step-title">ElevenLabs TTS — الصوت بالدارجة المغربية</div>
+                            <div class="step-desc">
+                                يُرسل السكريبت بالدارجة لـ ElevenLabs API ويرجع صوت MP3 بصوت <strong>"Ghizlane"</strong>
+                                — أفضل صوت دارجة مغربية متاح.
+                                <br><br>
+                                🎯 <code>Voice ID: OfGMGmhShO8iL9jCkXy8</code>
+                                <br>
+                                🤖 Model: <code>eleven_multilingual_v2</code>
+                            </div>
+                            <span class="step-tool">🔧 ElevenLabs API — HTTP Request</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-left">
+                        <div class="flow-icon">🎬</div>
+                        <div class="flow-line"></div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="step-card">
+                            <div class="step-number">الخطوة 5</div>
+                            <div class="step-title">HeyGen Create Video — الأفاتار يحكي بالدارجة</div>
+                            <div class="step-desc">
+                                يُرسل لـ HeyGen API صورة العشبة (avatar character) + الصوت MP3 فيخلق فيديو
+                                <strong>1080x1920 (9:16 Reel)</strong> بالأفاتار يحكي بالدارجة.
+                                <br><br>
+                                📌 محتاج: <code>talking_photo_id</code> من HeyGen Studio (رفع صورة العشبة)
+                            </div>
+                            <span class="step-tool">🔧 HeyGen API v2 — HTTP Request</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-left">
+                        <div class="flow-icon">⏳</div>
+                        <div class="flow-line"></div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="step-card">
+                            <div class="step-number">الخطوة 6</div>
+                            <div class="step-title">Wait + Poll — انتظار تجهيز الفيديو</div>
+                            <div class="step-desc">ينتظر 30 ثانية ثم يتحقق من حالة الفيديو. إذا كان ما زال يُعالج يكرر
+                                كل 20 ثانية. لما يكمل يكمل للخطوة التالية.</div>
+                            <span class="step-tool">🔧 Wait Node + IF Node</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-left">
+                        <div class="flow-icon">💾</div>
+                        <div class="flow-line"></div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="step-card">
+                            <div class="step-number">الخطوة 7</div>
+                            <div class="step-title">Google Drive — حفظ الفيديو (نسخة احتياطية)</div>
+                            <div class="step-desc">يحفظ الفيديو المكتمل تلقائيًا في Google Drive في مجلد خاص بالأعشاب،
+                                مع اسم الملف العشبة + التاريخ. ضروري لأرشيف المحتوى.</div>
+                            <span class="step-tool">🔧 Google Drive Node</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-left">
+                        <div class="flow-icon">🚀</div>
+                        <div class="flow-line"></div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="step-card" style="border-color:rgba(255,80,80,0.3);">
+                            <div class="step-number" style="color:#ff6b6b;">الخطوة 8 — الأهم! 🎯</div>
+                            <div class="step-title">النشر على YouTube Shorts + TikTok</div>
+                            <div class="step-desc">
+                                <strong>upload-post.com</strong> يُرسل الفيديو لكلا المنصتين في <strong>استدعاء API
+                                    واحد</strong>:<br><br>
+                                ▶️ <strong>YouTube Shorts</strong>: يُنشر تلقائيًا بعنوان + هاشتاغ <code>#Shorts</code>
+                                ليُصنَّف كـ Short<br>
+                                🎵 <strong>TikTok</strong>: يُنشر PUBLIC مع وصف بالدارجة والهاشتاغات<br><br>
+                                📌 ما عليك غير ربط حساباتك في dashboard ديال upload-post.com مرة واحدة
+                            </div>
+                            <span class="step-tool"
+                                style="background:rgba(255,0,0,0.1);border-color:rgba(255,80,80,0.3);color:#ff6b6b;">🔧
+                                upload-post.com API</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-left">
+                        <div class="flow-icon">📧</div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="step-card">
+                            <div class="step-number">الخطوة 9</div>
+                            <div class="step-title">Email Report — تقرير النشر</div>
+                            <div class="step-desc">يبعث إيميل بعد النشر يُؤكد فيه نجاح الرفع على YouTube Shorts +
+                                TikTok، مع لينك الفيديو في Google Drive للأرشيف.</div>
+                            <span class="step-tool">🔧 Email Send Node</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== TOOLS ===== -->
+        <h2 class="section-title">🛠️ الأدوات المستعملة</h2>
+        <p class="section-subtitle">كل أداة ودورها في الأتوماتيك</p>
+
+        <div class="tools-grid">
+            <div class="tool-card">
+                <div class="tool-logo">⚙️</div>
+                <div class="tool-name">n8n</div>
+                <div class="tool-role">محرك الأتوماتيك</div>
+                <div class="tool-desc">يربط كل الأدوات معًا ويتحكم في تدفق العمل. مجاني ومفتوح المصدر.</div>
+                <a href="https://n8n.io" target="_blank" class="tool-link">n8n.io →</a>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-logo">🎙️</div>
+                <div class="tool-name">ElevenLabs</div>
+                <div class="tool-role">الصوت بالدارجة</div>
+                <div class="tool-desc">صوت "Ghizlane" — أفضل صوت دارجة مغربية متاح بالذكاء الاصطناعي. Voice ID:
+                    <code>OfGMGmhShO8iL9jCkXy8</code></div>
+                <a href="https://elevenlabs.io" target="_blank" class="tool-link">elevenlabs.io →</a>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-logo">🎬</div>
+                <div class="tool-name">HeyGen</div>
+                <div class="tool-role">أفاتار يتكلم</div>
+                <div class="tool-desc">يحول صورة العشبة لأفاتار يتحرك ويتحدث مع تزامن الشفاه. 9:16 Reel format.</div>
+                <a href="https://heygen.com" target="_blank" class="tool-link">heygen.com →</a>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-logo">☁️</div>
+                <div class="tool-name">Google Drive</div>
+                <div class="tool-role">أرشيف الفيديوهات</div>
+                <div class="tool-desc">حفظ تلقائي لكل فيديو مكتمل كنسخة احتياطية قبل النشر على المنصات.</div>
+                <a href="https://drive.google.com" target="_blank" class="tool-link">drive.google.com →</a>
+            </div>
+
+            <div class="tool-card" style="border-color:rgba(255,80,80,0.25);">
+                <div class="tool-logo">🚀</div>
+                <div class="tool-name">Upload-Post.com</div>
+                <div class="tool-role">YouTube Shorts + TikTok</div>
+                <div class="tool-desc">خدمة تربط حسابك بكلا المنصتين — API واحد يُنشر على YouTube Shorts و TikTok في نفس
+                    الوقت. أسهل بكثير من OAuth المباشر.</div>
+                <a href="https://upload-post.com" target="_blank" class="tool-link"
+                    style="border-color:#ff6b6b;color:#ff6b6b;">upload-post.com →</a>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ===== CREDENTIALS TABLE ===== -->
+        <h2 class="section-title">🔑 API Keys المطلوبة</h2>
+        <p class="section-subtitle">احصل عليها قبل تشغيل الـ workflow</p>
+
+        <div class="script-card" style="overflow-x:auto;">
+            <table class="creds-table">
+                <thead>
+                    <tr>
+                        <th>الأداة</th>
+                        <th>كيفاش تحصل على API Key</th>
+                        <th>الرابط</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>🎙️ ElevenLabs</td>
+                        <td>اشترك مجانًا ← Settings ← API Keys</td>
+                        <td><code>elevenlabs.io/app/settings/api-keys</code></td>
+                    </tr>
+                    <tr>
+                        <td>🎬 HeyGen</td>
+                        <td>اشترك ← Settings ← API Key</td>
+                        <td><code>studio.heygen.com/settings/api-key</code></td>
+                    </tr>
+                    <tr>
+                        <td>☁️ Google Drive</td>
+                        <td>n8n Credentials ← Google Drive OAuth2</td>
+                        <td>داخل n8n Credentials</td>
+                    </tr>
+                    <tr>
+                        <td>🚀 Upload-Post.com</td>
+                        <td>اشترك ← Settings ← API Key ← اربط YouTube + TikTok</td>
+                        <td><code>app.upload-post.com/settings</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ===== IMPORT SECTION ===== -->
+        <div class="import-box">
+            <h2>🚀 ابدأ الاستيراد في n8n</h2>
+            <p>الـ workflow JSON جاهز — ما عليك غير تستورده في n8n وتضيف API keys ديالك</p>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="copyWorkflowPath()">
+                    📋 كوبي مسار الـ JSON
+                </button>
+                <a class="btn btn-secondary" href="https://n8n.io" target="_blank">
+                    ⚙️ افتح n8n
+                </a>
+            </div>
+            <p style="margin-top:16px;font-size:0.82rem;color:#6a9a7a;">
+                📂 الملف: <code>n8n_herb_reel_workflow.json</code> في نفس المجلد
+            </p>
+        </div>
+
+        <!-- HOW TO IMPORT -->
+        <div class="script-card">
+            <h3 style="color:var(--green-glow);margin-bottom:16px;">📥 كيفاش تستورد الـ Workflow في n8n</h3>
+            <ol style="color:var(--text-muted);line-height:2.4;font-size:0.92rem;padding-right:20px;">
+                <li>افتح n8n (<code>http://localhost:5678</code> أو cloud)</li>
+                <li>اضغط <code>+ New Workflow</code> ← <code>Import from File</code></li>
+                <li>اختار ملف <code>n8n_herb_reel_workflow.json</code></li>
+                <li>أضف Credentials: <strong>ElevenLabs</strong> + <strong>HeyGen</strong> + <strong>Google Drive
+                        OAuth</strong></li>
+                <li>افتح نود <strong>🎬 HeyGen Create Video</strong> وحط <code>talking_photo_id</code> ديال الصورة</li>
+                <li>سجل في <a href="https://upload-post.com" target="_blank"
+                        style="color:var(--green-glow);">upload-post.com</a> وربط حساب YouTube + TikTok ديالك</li>
+                <li>أضف upload-post.com API Key في credentials ديال n8n</li>
+                <li>اضغط <code>Test Workflow</code> — الفيديو راح يُنشر مباشرة على YouTube Shorts + TikTok! 🎉</li>
+            </ol>
+        </div>
+
+    </div><!-- /container -->
+
+    <footer>
+        <p>🌿 Herb Reels Automation — بالدارجة المغربية مع الذكاء الاصطناعي</p>
+        <p style="margin-top:8px;opacity:0.5;">n8n + ElevenLabs + HeyGen | Powered by AI</p>
+    </footer>
+
+    <script>
+        function copyWorkflowPath() {
+            const path = 'C:\\Users\\mohamed.elharroufi\\.gemini\\antigravity\\scratch\\herb-reels-n8n\\n8n_herb_reel_workflow.json';
+            navigator.clipboard.writeText(path).then(() => {
+                const btn = event.target;
+                btn.textContent = '✅ تم النسخ!';
+                setTimeout(() => { btn.textContent = '📋 كوبي مسار الـ JSON'; }, 2000);
+            });
+        }
+
+        // Subtle scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(el => {
+                if (el.isIntersecting) {
+                    el.target.style.opacity = '1';
+                    el.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.herb-card, .tool-card, .step-card, .script-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>
